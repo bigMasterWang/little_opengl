@@ -16,11 +16,11 @@ Shader::~Shader()
 	glUseProgram(0);
 }
 
-void Shader::Bind()
+void Shader::Bind() const
 {
 	glUseProgram(program_id);
 }
-void Shader::Unbind()
+void Shader::Unbind() const
 {
 	glUseProgram(0);
 }

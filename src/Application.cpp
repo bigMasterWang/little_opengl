@@ -11,8 +11,6 @@
 #include"VertexBufferLayout.h"
 #include"Shader.h"
 
-
-
 int main(void)
 {
 	GLFWwindow* window;
@@ -71,19 +69,16 @@ int main(void)
 	ib.Unbind();
 	va.Unbind();
 
+	Renderer renderer;
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
+		/* Render here */
 
 		shader.Bind();
-		//glBindVertexArray(vao);
-		va.Bind();
-		ib.Bind();
-
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		shader.set_uniform_4f("u_Color", r, 0.8f, 0.1f, 1.0f);
+		renderer.Draw(va, ib, shader);
 
 		if (r >= 1.0f)
 			increament = -0.05f;
@@ -91,9 +86,6 @@ int main(void)
 			increament = 0.05f;
 		r += increament;
 		std::cout << r << std::endl;
-
-
-		glCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
 
 
