@@ -30,13 +30,20 @@ unsigned int Shader::get_uniform_location(const std::string name)
 {
 	if (localtion_map.find(name) != localtion_map.end())
 		return localtion_map[name];
-	unsigned int localtion = glGetUniformLocation(program_id, name.c_str());
-	localtion_map[name] = localtion;
+	int location = glGetUniformLocation(program_id, name.c_str());
+	if (location == -1)
+		std::cout << "Waring uniform" << name << "doesn't exit!" << std::endl;
+	localtion_map[name] = location;
 	return localtion_map[name];
 }
 void Shader::set_uniform_4f(const std::string name, float v1, float v2, float v3, float v4)
 {
 	glUniform4f(get_uniform_location(name), v1, v2, v3, v4);
+}
+
+void Shader::set_uniform_1i(const std::string name, int v1)
+{
+	glUniform1i(get_uniform_location(name), v1);
 }
 
 unsigned int Shader::create_shader(std::string& vertex_shader, std::string& fragment_shader)

@@ -30,9 +30,13 @@ void VertexArray::SetLayout(const VertexBuffer& vb, const VertexBufferLayout& la
 	Bind();
 	vb.Bind();
 	const std::vector<LayoutElement> a = layout.get_elements();
+	unsigned int offset = 0;
 	for (int i = 0; i < a.size(); i++)
 	{
-		glCall(glEnableVertexAttribArray(i));
-		glVertexAttribPointer(i, a[i].count, a[i].type, a[i].normalize, a[i].count * sizeof(a[i].type), a[i].pointer);
+		//glEnableVertexAttribArray(0);
+		//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), 0);
+		glEnableVertexAttribArray(i);
+		glVertexAttribPointer(i, a[i].count, a[i].type, a[i].normalize, layout.get_stride(), (const void*)offset);
+		offset += a[i].count * sizeof(a[i].type);
 	}
 }

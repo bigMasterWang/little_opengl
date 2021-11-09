@@ -1,7 +1,7 @@
 #include"VertexBuffer.h"
 #include"Renderer.h"
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size)
+VertexBuffer::VertexBuffer(const void* data, float size)
 {
 	glCall(glGenBuffers(1, &m_render_id));
 	glBindBuffer(GL_ARRAY_BUFFER, m_render_id);

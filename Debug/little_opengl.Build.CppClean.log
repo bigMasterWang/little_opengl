@@ -1,7 +1,13 @@
 e:\vsprojects\little_opengl\debug\vc142.pdb
 e:\vsprojects\little_opengl\debug\vc142.idb
-e:\vsprojects\little_opengl\debug\test.obj
+e:\vsprojects\little_opengl\debug\vertexbuffer.obj
+e:\vsprojects\little_opengl\debug\renderer.obj
+e:\vsprojects\little_opengl\debug\indexbuffer.obj
 e:\vsprojects\little_opengl\debug\application.obj
+e:\vsprojects\little_opengl\debug\vertexarray.obj
+e:\vsprojects\little_opengl\debug\shader.obj
+e:\vsprojects\little_opengl\debug\stb_image.obj
+e:\vsprojects\little_opengl\debug\texture.obj
 e:\vsprojects\little_opengl\debug\little_opengl.exe
 e:\vsprojects\little_opengl\debug\little_opengl.ilk
 e:\vsprojects\little_opengl\debug\little_opengl.pdb

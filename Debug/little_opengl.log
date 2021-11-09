@@ -1,8 +1,2 @@
 ﻿  Application.cpp
-  Renderer.cpp
-  Shader.cpp
-  VertexArray.cpp
-  VertexBuffer.cpp
-  正在生成代码...
-E:\VSProjects\little_opengl\src\VertexArray.cpp(33,20): warning C4018: “<”: 有符号/无符号不匹配
   little_opengl.vcxproj -> E:\VSProjects\little_opengl\Debug\little_opengl.exe
