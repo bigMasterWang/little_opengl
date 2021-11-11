@@ -46,6 +46,13 @@ void Shader::set_uniform_1i(const std::string name, int v1)
 	glUniform1i(get_uniform_location(name), v1);
 }
 
+
+void Shader::set_uniform_v4(const std::string name, const glm::mat4 v4)
+{
+	glUniformMatrix4fv(get_uniform_location(name), 1, GL_FALSE, &v4[0][0]);
+}
+
+
 unsigned int Shader::create_shader(std::string& vertex_shader, std::string& fragment_shader)
 {
 	unsigned int program = glCreateProgram();
