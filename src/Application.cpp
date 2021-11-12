@@ -16,6 +16,7 @@
 #include"imgui/imgui.h"
 #include"imgui/imgui_impl_glfw.h"
 #include"imgui/imgui_impl_opengl3.h"
+#include"tests/TestClearColor.h"
 
 int main(void)
 {
@@ -95,9 +96,8 @@ int main(void)
 	glm::mat4 proj = glm::ortho(0.0f, 200.0f, 0.0f, 200.0f, -1.0f, 1.0f);
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
-	glm::vec3 model_translator(0.0f, 0.0f, 0.0f);
-
-
+	glm::vec3 model_translatorA(0.0f, 0.0f, 0.0f);
+	glm::vec3 model_translatorB(100.0f, 0.0f, 0.0f);
 
 
 
@@ -129,6 +129,11 @@ int main(void)
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+
+	test::TestCleraColor test;
+	float _color[4]{ 0.0f,0.0f,1.0f,1.0f };
+
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -143,13 +148,6 @@ int main(void)
 		ImGui::NewFrame();
 
 
-		shader.Bind();
-		shader.set_uniform_4f("u_Color", r, 0.8f, 0.1f, 1.0f);
-		//shader.set_uniform_1i("u_texture", 0);
-
-
-		glCall(renderer.Draw(va, ib, shader));
-
 		if (r >= 1.0f)
 			increament = -0.05f;
 		else if (r <= 0.0f)
@@ -157,9 +155,30 @@ int main(void)
 		r += increament;
 
 
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), model_translator);
-		glm::mat4 mvp = proj * view * model;
-		shader.set_uniform_v4("u_mvp", mvp);
+		//shader.set_uniform_4f("u_Color", r, 0.8f, 0.1f, 1.0f);
+		//shader.set_uniform_1i("u_texture", 0);
+
+		{
+			shader.Bind();
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), model_translatorA);
+			glm::mat4 mvp = proj * view * model;
+			shader.set_uniform_v4("u_mvp", mvp);
+			glCall(renderer.Draw(va, ib, shader));
+		}
+
+
+		{
+			shader.Bind();
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), model_translatorB);
+			glm::mat4 mvp = proj * view * model;
+			shader.set_uniform_v4("u_mvp", mvp);
+			glCall(renderer.Draw(va, ib, shader));
+		}
+
+
+		//why this work???
+		test.OnRender();
+		test.OnImGuiRender();
 
 		// 2.gui Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
@@ -172,8 +191,10 @@ int main(void)
 			//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 			//ImGui::Checkbox("Another Window", &show_another_window);
 
-			ImGui::SliderFloat("float1", &model_translator.x, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::SliderFloat("float2", &model_translator.y, -100.0f, 100.0f);
+			ImGui::SliderFloat("float1", &model_translatorA.x, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("float2", &model_translatorA.y, -100.0f, 100.0f);
+			ImGui::SliderFloat("float3", &model_translatorB.x, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("float4", &model_translatorB.y, -100.0f, 100.0f);
 			//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
 			//if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)

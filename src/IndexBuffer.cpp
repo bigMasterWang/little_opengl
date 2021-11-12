@@ -1,7 +1,7 @@
 #include"IndexBuffer.h"
 #include"GL/glew.h"
 
-IndexBuffer::IndexBuffer(const void* data, unsigned int count)
+IndexBuffer::IndexBuffer(const void* data, unsigned int count) : count(count)
 {
 	glGenBuffers(1, &m_render_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_render_id);
