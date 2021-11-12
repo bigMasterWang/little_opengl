@@ -13,7 +13,9 @@
 #include"Texture.h"
 #include"glm/glm.hpp"
 #include"glm/gtc/matrix_transform.hpp"
-
+#include"imgui/imgui.h"
+#include"imgui/imgui_impl_glfw.h"
+#include"imgui/imgui_impl_opengl3.h"
 
 int main(void)
 {
@@ -24,12 +26,16 @@ int main(void)
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(1600, 900, "my son guanju, come to nanjing soon", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
 		return -1;
 	}
+
+
+
+
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
@@ -38,22 +44,17 @@ int main(void)
 	{
 		std::cout << "ERROR!!!" << std::endl;
 	}
+	glfwSwapInterval(1); // Enable vsync
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 
-	float position[16] = {
-		-0.5f, -0.5f, 0.0f, 0.0f,
-		0.5f, -0.5f, 1.0f, 0.0f,
-		0.5f, 0.5f, 1.0f, 1.0f,
-		-0.5f, 0.5f, 0.0f, 1.0f,
-	};
 
-	//float position[8] = {
-	//	-0.5f, -0.5f,
-	//	0.5f, -0.5f,
-	//	0.5f, 0.5f,
-	//	-0.5f, 0.5f,
-	//};
+	float position[16] = {
+		50.0f, 25.0f, 0.0f, 0.0f,
+		100.0f, 25.0f, 1.0f, 0.0f,
+		100.0f, 150.0f, 1.0f, 1.0f,
+		50.0f, 150.0f, 0.0f, 1.0f
+	};
 
 
 	unsigned int indices[6] = {
@@ -80,23 +81,26 @@ int main(void)
 
 
 
-
-
-
-
 	Shader shader("res/shader/base.shader");
 	shader.Bind();
 	shader.set_uniform_4f("u_Color", 0.0f, 0.8f, 0.1f, 1.0f);
 
 
 	// 对图片有很高的要求, 有的就是不行
-	Texture texture("res/texture/ogl_sm.jpg");
+	Texture texture("res/texture/gj.jpg");
 	texture.Bind();
 	shader.set_uniform_1i("u_texture", 0);
 
 
-	glm::mat4 proj = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f);
-	shader.set_uniform_v4("u_mvp", proj);
+	glm::mat4 proj = glm::ortho(0.0f, 200.0f, 0.0f, 200.0f, -1.0f, 1.0f);
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+	glm::vec3 model_translator(0.0f, 0.0f, 0.0f);
+
+
+
+
+
 
 
 	va.Unbind();
@@ -110,10 +114,34 @@ int main(void)
 	float increament = 0.01f;
 
 
+	// gui Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init();
+
+
+
+	// gui Our state
+	bool show_demo_window = true;
+	bool show_another_window = false;
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
+
+		renderer.Clear();
+
+		//gui
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
 
 		shader.Bind();
 		shader.set_uniform_4f("u_Color", r, 0.8f, 0.1f, 1.0f);
@@ -127,8 +155,40 @@ int main(void)
 		else if (r <= 0.0f)
 			increament = 0.05f;
 		r += increament;
-		std::cout << r << std::endl;
 
+
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), model_translator);
+		glm::mat4 mvp = proj * view * model;
+		shader.set_uniform_v4("u_mvp", mvp);
+
+		// 2.gui Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			//static float f = 0.0f;
+			//static int counter = 0;
+
+			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+			//ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+			//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+			//ImGui::Checkbox("Another Window", &show_another_window);
+
+			ImGui::SliderFloat("float1", &model_translator.x, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("float2", &model_translator.y, -100.0f, 100.0f);
+			//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+			//if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+			//	counter++;
+			//ImGui::SameLine();
+			//ImGui::Text("counter = %d", counter);
+
+			//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::End();
+		}
+
+
+		//gui Rendering
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
 		/* Swap front and back buffers */
@@ -136,7 +196,14 @@ int main(void)
 
 		/* Poll for and process events */
 		glfwPollEvents();
+
 	}
+
+
+	//gui Cleanup
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	shader.Unbind();
 	va.Unbind();
 	ib.Unbind();
