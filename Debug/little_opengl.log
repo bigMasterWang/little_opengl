@@ -1,2 +1,12 @@
-﻿  Application.cpp
+﻿  TestTexture.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.23.28105\include\memory(2057,56): warning C4244: “参数”: 从“_Ty”转换到“float”，可能丢失数据
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.23.28105\include\memory(2057,56): warning C4244:         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.23.28105\include\memory(2057,56): warning C4244:         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.23.28105\include\memory(2057,56): warning C4244:             _Ty=unsigned int
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.23.28105\include\memory(2057,56): warning C4244:         ]
+E:\VSProjects\little_opengl\src\tests\TestTexture.cpp(35): message : 查看对正在编译的函数 模板 实例化“std::unique_ptr<VertexBuffer,std::default_delete<_Ty>> std::make_unique<VertexBuffer,float(&)[16],unsigned int,0>(float (&)[16],unsigned int &&)”的引用
+E:\VSProjects\little_opengl\src\tests\TestTexture.cpp(35): message :         with
+E:\VSProjects\little_opengl\src\tests\TestTexture.cpp(35): message :         [
+E:\VSProjects\little_opengl\src\tests\TestTexture.cpp(35): message :             _Ty=VertexBuffer
+E:\VSProjects\little_opengl\src\tests\TestTexture.cpp(35): message :         ]
   little_opengl.vcxproj -> E:\VSProjects\little_opengl\Debug\little_opengl.exe
